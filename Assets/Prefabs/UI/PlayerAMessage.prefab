@@ -267,6 +267,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5930787604258195459}
   - component: {fileID: 3976584305478044048}
+  - component: {fileID: 6209943795035557656}
   m_Layer: 5
   m_Name: PlayerAMessage
   m_TagString: Untagged
@@ -303,6 +304,21 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4010699516870852377}
   m_CullTransparentMesh: 1
+--- !u!114 &6209943795035557656
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4010699516870852377}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99a360e2d2775ea4a8ba524c8d1ee4d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _playerNameTMP: {fileID: 6125478756939060936}
+  _eventTMP: {fileID: 6587221376176883858}
+  _timeTMP: {fileID: 9081288392578828881}
 --- !u!1 &4762995593625357969
 GameObject:
   m_ObjectHideFlags: 0
@@ -390,7 +406,7 @@ GameObject:
   - component: {fileID: 4683757446006191313}
   - component: {fileID: 6587221376176883858}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: EventDescriptionTMP
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -524,7 +540,7 @@ GameObject:
   - component: {fileID: 5064599654332358561}
   - component: {fileID: 9081288392578828881}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: TimeTMP
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

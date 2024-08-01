@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -15,6 +16,10 @@ public class Player : MonoBehaviour
 
     private GameObject targetUnit;
     private Animator animator;
+    private string playerName;
+    private UnitType playerType;
+    private DateTime lastDamageTime;
+    private Player attacker; // Reference to the player who attacked and caused the death
 
     void Start()
     {
@@ -123,6 +128,36 @@ public class Player : MonoBehaviour
     {
         animator.SetFloat("moveAmount", 1f);
         Debug.Log("State: Die");
+
+        if (attacker != null)
+        {
+            // Notify the attacker about the kill (if needed)
+            Debug.Log($"{attacker.playerName} killed {playerName}!");
+
+            DateTime now = DateTime.Now;
+            TimeSpan timeDifference = now - lastDamageTime;
+            string timeAgo;
+
+            if (timeDifference.TotalMinutes < 1)
+            {
+                timeAgo = "0 mins ago";
+            }
+            else if (timeDifference.TotalMinutes < 60)
+            {
+                timeAgo = $"{(int)timeDifference.TotalMinutes} mins ago";
+            }
+            else
+            {
+                timeAgo = $"{(int)timeDifference.TotalHours} hours ago";
+            }
+
+            string attackerName = attacker.playerName;
+            string message = $"{playerName} is killed by {attackerName}";
+
+
+            UnitEvents.RaiseUnitDie(playerName, message, timeAgo,playerType );
+        }
+
         // Perform death logic here (e.g., disable unit, play death animation)
         Destroy(gameObject, 0.5f); // Destroy after 0.5 seconds to allow death animation to play
     }
@@ -221,17 +256,40 @@ public class Player : MonoBehaviour
         return gameObject.tag == "RedUnit" ? "BlueUnit" : "RedUnit";
     }
 
-    public void TakeDamage(float damage)
+    public void TakeDamage(float damage, Player attacker)
     {
         if (currentState == State.Die)
         {
             return; // Ignore damage if already dead
         }
 
+        this.attacker = attacker; // Set the attacker
         health -= damage;
         health = Mathf.Max(health, 0); // Ensure health does not go below zero
 
+        DateTime now = DateTime.Now;
+        TimeSpan timeDifference = now - lastDamageTime;
+        lastDamageTime = now;
+        string timeAgo;
+
+        if (timeDifference.TotalMinutes < 1)
+        {
+            timeAgo = "0 mins ago";
+        }
+        else if (timeDifference.TotalMinutes < 60)
+        {
+            timeAgo = $"{(int)timeDifference.TotalMinutes} mins ago";
+        }
+        else
+        {
+            timeAgo = $"{(int)timeDifference.TotalHours} hours ago";
+        }
+
         Debug.Log("TakeDamage: " + gameObject.name + " Health: " + health);
+        string message = $"{playerName}'s health is deducted to {health}";
+        Debug.LogError("Message: " + message);
+        Debug.LogError("Time: " + timeAgo);
+        UnitEvents.UpdateUnitHealth(playerName, message, timeAgo, playerType);
 
         if (health <= 0)
         {
@@ -253,8 +311,14 @@ public class Player : MonoBehaviour
     {
         if (targetUnit != null && currentState != State.Die)
         {
-            targetUnit.GetComponent<Player>().TakeDamage(damage);
+            targetUnit.GetComponent<Player>().TakeDamage(damage, this); // Pass self as the attacker
             Debug.Log($"{gameObject.tag} unit attacking {targetUnit.tag} unit!");
         }
+    }
+
+    public void SetPlayerDetails(string playerName, UnitType unitType)
+    {
+        this.playerName = playerName;
+        this.playerType = unitType;
     }
 }
