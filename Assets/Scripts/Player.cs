@@ -155,7 +155,7 @@ public class Player : MonoBehaviour
             string message = $"{playerName} is killed by {attackerName}";
 
 
-            UnitEvents.RaiseUnitDie(playerName, message, timeAgo,playerType );
+            UnitEvents.RaiseUnitDie(playerName, message, DateTime.Now,playerType );
         }
 
         // Perform death logic here (e.g., disable unit, play death animation)
@@ -289,7 +289,7 @@ public class Player : MonoBehaviour
         string message = $"{playerName}'s health is deducted to {health}";
         Debug.LogError("Message: " + message);
         Debug.LogError("Time: " + timeAgo);
-        UnitEvents.UpdateUnitHealth(playerName, message, timeAgo, playerType);
+        UnitEvents.UpdateUnitHealth(playerName, message, DateTime.Now, playerType);
 
         if (health <= 0)
         {

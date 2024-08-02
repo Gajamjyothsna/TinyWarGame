@@ -105,7 +105,7 @@ public class UnitSpawner : MonoBehaviour
         }
 
         // Raise the event
-        UnitEvents.RaiseUnitSpawned(playerName, message, timeAgo, unitType);
+        UnitEvents.RaiseUnitSpawned(playerName, message, DateTime.Now, unitType);
     }
 
 
